@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 
+from config.env import SECRET_KEY, DEBUG, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -9,12 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ok4p*j3%zz-a8t%^y(p%zmsee%b@cmdvwhqgx+m^@*ijt!2@tj"
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -31,6 +33,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # ----
     # Apps here
+    "core",
+    "authentication",
 ]
 
 MIDDLEWARE = [
@@ -64,13 +68,20 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
+AUTH_USER_MODEL = "authentication.User"
+
+
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,
+        "PORT": DB_PORT,
     }
 }
 
@@ -121,9 +132,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://www.django-rest-framework.org/api-guide/settings/
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 
