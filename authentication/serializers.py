@@ -1,30 +1,23 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.password_validation import validate_password
 
-from authentication.models import User, Profile, LoginOTP
+from authentication.models import User
+
+from core.utils import get_object_or_error
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
-    phone_number = serializers.IntegerField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    confirm_password = serializers.CharField(required=True, write_only=True)
+class UserLoginSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=255, required=False)
+    token = serializers.CharField(max_length=255, read_only=True)
 
-    class Meta:
-        model = User
-        fields = ("phone_number", "password", "confirm_password")
+    def validate(self, data):
+        phone_number = data.get("phone_number", None)
 
-    def validate(self, attrs):
-        if attrs["password"] != attrs["confirm_password"]:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        if phone_number is None:
+            raise serializers.ValidationError("An email or username or phonenumber is required to log in.")
 
-        return attrs
+        # authenticate using phone number or username or email
+        user = get_object_or_error(
+            User, phone_number=phone_number, is_verified=True, error_message="User does not exist."
+        )
 
-    def create(self, validated_data):
-        user = User.objects.create(phone_number=validated_data["phone_number"])
-        user.set_password(validated_data["password"])
-        user.save()
-
-        Profile.objects.create(user=user)
-
-        return user
+        return {"token": user.token}
