@@ -14,7 +14,7 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.phone_number)
+        return self.phone_number
 
     @property
     def token(self):
@@ -34,7 +34,7 @@ class User(models.Model):
         dt = datetime.now() + timedelta(60)
         token = jwt.encode(
             {
-                "uuid": str(self.uuid),
+                "uuid": str(self.id),
                 "exp": int(dt.timestamp()),
             },
             settings.SECRET_KEY,
@@ -48,11 +48,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="profile_images", blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, default=None)
-    state = models.ForeignKey(State, on_delete=models.CASCADE, default=None)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    state = models.ForeignKey(State, on_delete=models.CASCADE, default=None, blank=True, null=True)
     pincode = models.BigIntegerField(blank=True, null=True)
     upi_id = models.CharField(max_length=128, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.phone_number
 
 
 class LoginOTP(models.Model):
@@ -61,4 +64,4 @@ class LoginOTP(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user
+        return self.user.phone_number

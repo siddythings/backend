@@ -30,7 +30,7 @@ Backend Service for a Parking Lot.
   sudo docker run --network=host --name parking-lot -e POSTGRES_DB=parking -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
   ```
 
-  - Database Name: postgres
+  - Database Name: parking
   - User: postgres
   - Password: postgres
   - Host: 127.0.0.1 (localhost)
@@ -41,7 +41,3 @@ Backend Service for a Parking Lot.
   python manage.py migrate
   python manage.py runserver
   ```
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
