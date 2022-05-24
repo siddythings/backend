@@ -27,7 +27,7 @@ Backend Service for a Parking Lot.
 - Host Postgres Database using Docker
 
   ```bash
-  sudo docker run --network=host --name parking-lot -e POSTGRES_DB=parking -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+  docker run -p 5432:5432 --name parking-lot -e POSTGRES_DB=parking -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
   ```
 
   - Database Name: parking
