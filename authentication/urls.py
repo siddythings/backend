@@ -3,6 +3,6 @@ from authentication import views
 
 
 urlpatterns = [
-    path("request-otp/", views.OTPRequestAPI.as_view(), name="request-otp"),
-    path("verify-otp/", views.VerifyOTPAPI.as_view(), name="verify-otp"),
+    path("request-otp/", views.OTPRequestAPI.as_view(), name="authentication-request-otp"),
+    path("verify-otp/", views.VerifyOTPAPI.as_view(), name="authentication-verify-otp"),
 ]

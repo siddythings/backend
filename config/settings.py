@@ -1,7 +1,7 @@
 from pathlib import Path
-from datetime import timedelta
+import pytesseract
 
-from config.env import SECRET_KEY, DEBUG, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+from config.env import SECRET_KEY, DEBUG, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, TESSERACT_PATH
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,6 +117,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -131,3 +134,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("authentication.backends.JWTAuthentication",),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+
+# Tesseract
+# https://github.com/tesseract-ocr/tesseract
+pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH

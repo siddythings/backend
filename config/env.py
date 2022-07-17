@@ -14,3 +14,6 @@ DB_PORT = environ.get("DB_PORT", "5432")
 DB_NAME = environ.get("DB_NAME", "parking")
 DB_USER = environ.get("DB_USER", "postgres")
 DB_PASSWORD = environ.get("DB_PASSWORD", "postgres")
+
+# Tesseract
+TESSERACT_PATH = environ.get("TESSERACT_PATH")
